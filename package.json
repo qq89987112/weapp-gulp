@@ -1,0 +1,28 @@
+{
+  "name": "vue-html",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node build/gulpfile.js",
+    "startD": "node %NODE_DEBUG_OPTION% build/gulpfile.js"
+  },
+  "author": "蔡荣庚 89987112@qq.com",
+  "devDependencies": {
+    "express": "^4.16.2",
+    "fs-extra": "^5.0.0",
+    "glob": "^7.1.2",
+    "node-sass": "^4.7.2"
+  },
+  "dependencies": {
+    "fs-extra": "^5.0.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "http-proxy-middleware": "^0.18.0",
+    "js-beautify": "^1.7.5",
+    "quick-local-ip": "^1.0.7",
+    "shelljs": "^0.8.2",
+    "through2": "^2.0.3",
+    "ws": "^5.1.1"
+  }
+}
