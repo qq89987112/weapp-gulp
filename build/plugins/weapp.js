@@ -20,7 +20,8 @@ module.exports = function({dist,development}) {
         let 
             scssReg = /<style>([\s\S]+)<\/style>/,
             templateReg = /<template>([\s\S]+)<\/template>/,
-            jsReg = /<script>([\s\S]+)<\/script>/;
+            jsReg = /<script>([\s\S]+)<\/script>/,
+            configReg = /<config>([\s\S]+)<\/config>/;
 
         let result = scssReg.exec(content);
         let fileName = path.basename(file.path,path.extname(file.path));
@@ -53,6 +54,16 @@ module.exports = function({dist,development}) {
                 fse.outputFileSync(path.resolve(dist,`./pages/${fileName}.wxml`),jsBeautify.html(result));
                 // content = content.replace(matchText,"");
             }
+
+            result = configReg.exec(content);
+
+            if(result){
+                let matchText = result[0];
+                result = result[1];
+                fse.outputFileSync(path.resolve(dist,`./pages/${fileName}.json`),jsBeautify.js(result));
+                // content = content.replace(matchText,"");
+            }
+
             callback(null);
     }
   

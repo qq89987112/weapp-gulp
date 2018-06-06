@@ -94,3 +94,6 @@ Page({
 })
 
 </script>
+<config>
+  
+</config>
