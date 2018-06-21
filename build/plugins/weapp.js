@@ -60,7 +60,7 @@ module.exports = function({dist,development}) {
             if(result){
                 let matchText = result[0];
                 result = result[1];
-                fse.outputFileSync(path.resolve(dist,`./pages/${fileName}.json`),jsBeautify.js(result));
+                fse.outputFileSync(path.resolve(dist,`./pages/${fileName}.json`),jsBeautify.js(result.trim()||"{}"));
                 // content = content.replace(matchText,"");
             }
 

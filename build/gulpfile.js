@@ -26,13 +26,18 @@ gulp.task("server", (cb) => {
         }
     }));
     app.listen(8088, function () {
-      gulp.watch(htmlPath, function () {
-        gulp.run("extract");
-      });
-      gulp.watch(path.resolve("./src/!(pages)/**"), function () {
-        gulp.run("copy");
-      });
-
+        gulp.watch(path.resolve("./src/pages"), function () {
+          gulp.run("extract");
+        });
+        gulp.watch(path.resolve("./src/pages/*.vue"), function () {
+          gulp.run("extract");
+        });
+        gulp.watch(path.resolve("./src/!(pages)/**"), function () {
+            gulp.run("copy");
+        });
+        gulp.watch(path.resolve("./src/!(pages)"), function () {
+            gulp.run("copy");
+        });
     });
 });
 
