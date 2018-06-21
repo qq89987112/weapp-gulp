@@ -4,7 +4,7 @@ var fse = require("fs-extra");
 var path = require("path");
 var jsBeautify = require('js-beautify');
 var gulp = require('gulp');
-module.exports = function({dist,development}) {
+module.exports = function({dist,development,dirPath}) {
 
 
     function doSomething(file, encoding, callback) {
@@ -32,7 +32,7 @@ module.exports = function({dist,development}) {
                 result = nodesass.renderSync({
                     data:result
                 });
-                fse.outputFileSync(path.resolve(dist,`./pages/${fileName}.wxss`),jsBeautify.css(result.css.toString()));
+                fse.outputFileSync(path.join(dirPath,`./${fileName}.wxss`),jsBeautify.css(result.css.toString()));
                 // content = content.replace(matchText,"");
             }
 
@@ -42,7 +42,7 @@ module.exports = function({dist,development}) {
             if(result){
                 let matchText = result[0];
                 result = result[1];
-                fse.outputFileSync(path.resolve(dist,`./pages/${fileName}.js`),jsBeautify.js(result));
+                fse.outputFileSync(path.join(dirPath,`./${fileName}.js`),jsBeautify.js(result));
                 // content = content.replace(matchText,"");
             }
 
@@ -51,7 +51,7 @@ module.exports = function({dist,development}) {
             if(result){
                 let matchText = result[0];
                 result = result[1];
-                fse.outputFileSync(path.resolve(dist,`./pages/${fileName}.wxml`),jsBeautify.html(result));
+                fse.outputFileSync(path.join(dirPath,`./${fileName}.wxml`),jsBeautify.html(result));
                 // content = content.replace(matchText,"");
             }
 
@@ -60,7 +60,7 @@ module.exports = function({dist,development}) {
             if(result){
                 let matchText = result[0];
                 result = result[1];
-                fse.outputFileSync(path.resolve(dist,`./pages/${fileName}.json`),jsBeautify.js(result.trim()||"{}"));
+                fse.outputFileSync(path.join(dirPath,`./${fileName}.json`),jsBeautify.js(result.trim()||"{}"));
                 // content = content.replace(matchText,"");
             }
 

@@ -60,10 +60,10 @@ gulp.task("copy-js", () => {
 gulp.task("copy-other", ["copy-other1","copy-other2"]);
 
 gulp.task("copy-other1", () => {
-    return gulp.src(path.resolve(srcPath, "./!(css|js|pages)/**")).pipe(gulp.dest(`${buildPath}`));
+    return gulp.src(path.resolve(srcPath, "./!(css|js|pages|components)/**")).pipe(gulp.dest(`${buildPath}`));
 });
 gulp.task("copy-other2", () => {
-    return gulp.src(path.resolve(srcPath, "./!(css|js|pages)")).pipe(gulp.dest(`${buildPath}`)).on("end",()=>{
+    return gulp.src(path.resolve(srcPath, "./!(css|js|pages|components)")).pipe(gulp.dest(`${buildPath}`)).on("end",()=>{
         let paths = glob.sync(path.resolve(buildPath, "./pages/*.wxml"));
         let appJsonAddr = path.resolve(buildPath, "./app.json");
         let appJson = JSON.parse(fse.readFileSync(appJsonAddr,"utf-8"));
@@ -77,8 +77,14 @@ gulp.task("copy-other2", () => {
 
 gulp.task("copy", ["copy-css", "copy-js","copy-other"]);
 
-gulp.task("extract",() => {
-    return gulp.src(htmlPath).pipe(weapp({dist: buildPath, development: true})).pipe(gulp.dest(`${buildPath}/pages`));
+gulp.task("extract",['extract-pages','extract-components']);
+
+gulp.task("extract-pages",() => {
+    return gulp.src(htmlPath).pipe(weapp({dist: buildPath,dirPath:path.resolve("./dist/pages"), development: true}));
+});
+
+gulp.task("extract-components",() => {
+    return gulp.src(path.resolve("./src/components/*.vue")).pipe(weapp({dist: buildPath,dirPath:path.resolve("./dist/components"), development: true}));
 });
 
 gulp.task("build", ["extract","copy"]);
@@ -86,7 +92,5 @@ gulp.task("build", ["extract","copy"]);
 gulp.task("reBuild", ["clean","build"]);
 
 gulp.task("default", ["server"]);
-
-
 
 gulp.run();
