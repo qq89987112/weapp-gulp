@@ -9,7 +9,6 @@ var c = require('child_process');//子进程 用于打开默认浏览器
 const shelljs = require('shelljs');
 const buildPath = path.resolve("./dist");
 const srcPath = path.resolve("./src");
-const htmlPath = path.resolve(srcPath, "./pages/*.vue");
 const concat = require('gulp-concat');
 const glob = require('glob');
 
@@ -82,7 +81,7 @@ gulp.task("copy", ["copy-css", "copy-js","copy-other"]);
 gulp.task("extract",['extract-pages','extract-components']);
 
 gulp.task("extract-pages",() => {
-    return gulp.src(htmlPath).pipe(weapp({dist: buildPath,dirPath:path.resolve("./dist/pages"), development: true}));
+    return gulp.src(path.resolve("./src/pages/*.vue")).pipe(weapp({dist: buildPath,dirPath:path.resolve("./dist/pages"), development: true}));
 });
 
 gulp.task("extract-components",() => {
