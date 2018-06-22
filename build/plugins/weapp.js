@@ -19,6 +19,7 @@ module.exports = function({dist,development,dirPath}) {
         let content = file.contents.toString();
         let 
             scssReg = /<style .+?>([\s\S]+)<\/style>/,
+            wxssImportReg = /@import +['"].+?.wxss *['"] *;?/g,
             templateReg = /<template>([\s\S]+)<\/template>/,
             jsReg = /<script>([\s\S]+)<\/script>/,
             configReg = /<config>([\s\S]+)<\/config>/;
@@ -30,10 +31,15 @@ module.exports = function({dist,development,dirPath}) {
                 try{
                     let matchText = result[0];
                     result = result[1];
+                    let imports = "";
+                    result = result.replace(wxssImportReg,i=>{
+                        imports+=i;
+                        return "";
+                    })
                     result = nodesass.renderSync({
                         data:result
                     });
-                    fse.outputFileSync(path.join(dirPath,`./${fileName}.wxss`),jsBeautify.css(result.css.toString()));
+                    fse.outputFileSync(path.join(dirPath,`./${fileName}.wxss`),jsBeautify.css(imports+result.css.toString()));
                     // content = content.replace(matchText,"");
                 }catch(e){
                     console.error(e.message,file.path);
