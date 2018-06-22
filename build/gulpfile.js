@@ -33,7 +33,7 @@ gulp.task("server", (cb) => {
             console.timeEnd("extract");
         }));
 
-        const copyPaths = ["./src/app*","./src/!(pages)/**","./src/!(pages)"];
+        const copyPaths = ["./src/!(pages)/**","./src/!(pages)"];
         copyPaths.forEach(i=>gulp.watch(path.resolve(i), ()=>{
             console.time("copy");
             gulp.run("copy");
