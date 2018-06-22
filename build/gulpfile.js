@@ -27,10 +27,18 @@ gulp.task("server", (cb) => {
     }));
     app.listen(8088, function () {
         const extractPaths = ["./src/pages","./src/pages/*.vue","./src/components","./src/components/*.vue"];
-        extractPaths.forEach(i=>gulp.watch(path.resolve(i), ()=>gulp.run("extract")));
+        extractPaths.forEach(i=>gulp.watch(path.resolve(i), ()=>{
+            console.time("extract");
+            gulp.run("extract");
+            console.timeEnd("extract");
+        }));
 
-        const copyPaths = ["./src/!(pages)/**","./src/!(pages)"];
-        extractPaths.forEach(i=>gulp.watch(path.resolve(i), ()=>gulp.run("copy")));
+        const copyPaths = ["./src/app*","./src/!(pages)/**","./src/!(pages)"];
+        copyPaths.forEach(i=>gulp.watch(path.resolve(i), ()=>{
+            console.time("copy");
+            gulp.run("copy");
+            console.timeEnd("copy");
+        }));
        
     });
 });
