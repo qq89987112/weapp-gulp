@@ -26,18 +26,12 @@ gulp.task("server", (cb) => {
         }
     }));
     app.listen(8088, function () {
-        gulp.watch(path.resolve("./src/pages"), function () {
-          gulp.run("extract");
-        });
-        gulp.watch(path.resolve("./src/pages/*.vue"), function () {
-          gulp.run("extract");
-        });
-        gulp.watch(path.resolve("./src/!(pages)/**"), function () {
-            gulp.run("copy");
-        });
-        gulp.watch(path.resolve("./src/!(pages)"), function () {
-            gulp.run("copy");
-        });
+        const extractPaths = ["./src/pages","./src/pages/*.vue","./src/components","./src/components/*.vue"];
+        extractPaths.forEach(i=>gulp.watch(path.resolve(i), ()=>gulp.run("extract")));
+
+        const copyPaths = ["./src/!(pages)/**","./src/!(pages)"];
+        extractPaths.forEach(i=>gulp.watch(path.resolve(i), ()=>gulp.run("copy")));
+       
     });
 });
 
