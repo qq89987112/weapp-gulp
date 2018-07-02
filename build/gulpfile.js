@@ -65,7 +65,7 @@ gulp.task("copy-other1", () => {
 });
 gulp.task("copy-other2", () => {
     return gulp.src(path.resolve(srcPath, "./!(css|js|pages|components)")).pipe(gulp.dest(`${buildPath}`)).on("end",()=>{
-        let paths = glob.sync(path.resolve(buildPath, "./pages/*.wxml"));
+        let paths = glob.sync(path.resolve("./src/pages/*.vue"));
         let appJsonAddr = path.resolve(buildPath, "./app.json");
         let appJson = JSON.parse(fse.readFileSync(appJsonAddr,"utf-8"));
         appJson.pages = paths.map(i=>{
