@@ -43,7 +43,7 @@ gulp.task("server", (cb) => {
 });
 
 gulp.task("clean", (cb) => {
-    fse.removeSync(buildPath);
+    fse.emptyDirSync(buildPath);
     cb();
 });
 
