@@ -13,6 +13,20 @@ const concat = require('gulp-concat');
 const glob = require('glob');
 
 const proxyUrl = "http://192.168.1.205:8081";
+
+
+const generateAppJson = ()=>{
+    let paths = glob.sync(path.resolve("./src/pages/*.vue"));
+    let appJsonAddr = path.resolve(buildPath, "./app.json");
+    let appJson = JSON.parse(fse.readFileSync(appJsonAddr,"utf-8"));
+    appJson.pages = paths.map(i=>{
+        let name = path.basename(i,path.extname(i));
+        return `pages/${name}`;
+    })
+    fse.outputFileSync(appJsonAddr,JSON.stringify(appJson,undefined,"\t"));
+}
+
+
 gulp.task("server", (cb) => {
     gulp.run("reBuild");
     var app = express();
@@ -38,7 +52,8 @@ gulp.task("server", (cb) => {
             gulp.run("copy");
             console.timeEnd("copy");
         }));
-       
+
+        gulp.watch("./src/pages",generateAppJson);
     });
 });
 
@@ -64,16 +79,7 @@ gulp.task("copy-other1", () => {
     return gulp.src(path.resolve(srcPath, "./!(css|js|pages|components)/**")).pipe(gulp.dest(`${buildPath}`));
 });
 gulp.task("copy-other2", () => {
-    return gulp.src(path.resolve(srcPath, "./!(css|js|pages|components)")).pipe(gulp.dest(`${buildPath}`)).on("end",()=>{
-        let paths = glob.sync(path.resolve("./src/pages/*.vue"));
-        let appJsonAddr = path.resolve(buildPath, "./app.json");
-        let appJson = JSON.parse(fse.readFileSync(appJsonAddr,"utf-8"));
-        appJson.pages = paths.map(i=>{
-            let name = path.basename(i,path.extname(i));
-            return `pages/${name}`;
-        })
-        fse.outputFileSync(appJsonAddr,JSON.stringify(appJson,undefined,"\t"));
-    });
+    return gulp.src(path.resolve(srcPath, "./!(css|js|pages|components)")).pipe(gulp.dest(`${buildPath}`)).on("end",generateAppJson);
 });
 
 gulp.task("copy", ["copy-css", "copy-js","copy-other"]);
